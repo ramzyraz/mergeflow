@@ -3,7 +3,7 @@
 .env/
 
 # Firebase Service Account
-teamflow-14b29-firebase-adminsdk-gmwd3-a4c64cf73a
+teamflow-14b29-firebase-adminsdk-gmwd3-a4c64cf73a.json
 
 #logs
 app.log

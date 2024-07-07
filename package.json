@@ -1,0 +1,27 @@
+{
+  "name": "mergeflow.api",
+  "version": "1.0.0",
+  "description": "API for MergeFlow",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon --trace-warnings src/index.js"
+  },
+  "keywords": [],
+  "author": "Ramez Salman",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "date-fns": "^3.6.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "firebase-admin": "^12.2.0",
+    "mongoose": "^8.4.5",
+    "postmark": "^4.0.4",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}

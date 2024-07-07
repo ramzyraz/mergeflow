@@ -1,0 +1,9 @@
+/node_modules
+/.env
+.env/
+
+# Firebase Service Account
+teamflow-14b29-firebase-adminsdk-gmwd3-a4c64cf73a
+
+#logs
+app.log

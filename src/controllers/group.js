@@ -1,6 +1,7 @@
 import Group from "../models/group.js";
 import Team from "../models/team.js";
 import Member from "../models/member.js";
+import { ObjectId } from "../utils/db.js";
 
 export const createGroup = async (req, res) => {
   try {
@@ -175,15 +176,19 @@ export const removeFromGroup = async (req, res) => {
       return res.status(404).json({ error: "Group not found in this team." });
     }
 
+    // Use the filter method to create a new array excluding the member with the given memberId
+    group.members = group.members.filter((memId) => !memId.equals(new ObjectId(memberId)));
+    await group.save();
+
     // Check if the member exists
-    const member = await Member.findOne({ _id: memberId, teamId });
+    const member = await Member.findOneAndUpdate(
+      { _id: memberId, teamId },
+      { groupId: null },
+      { new: true }
+    );
     if (!member) {
       return res.status(404).json({ error: "Member not found in this team." });
     }
-
-    // Use the filter method to create a new array excluding the member with the given memberId
-    group.members = group.members.filter((memId) => memId.equals(memberId));
-    await group.save();
 
     res
       .status(200)

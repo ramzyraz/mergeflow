@@ -9,7 +9,7 @@ const router = express.Router();
 router.get("/", (_, res) =>
   res.status(200).send("Hello! Default API Server for Mergeflow"),
 );
-router.use("/member", routesMember);
+router.use("/members", routesMember);
 router.use("/documents", routesDocument);
 router.use("/teams", routesTeam);
 router.use("/groups", routesGroup);

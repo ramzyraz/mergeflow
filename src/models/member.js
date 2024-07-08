@@ -3,11 +3,6 @@ import { MEMBER_STATUS } from "../constants/member.js";
 
 const Schema = new mongoose.Schema(
   {
-    uid: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     name: {
       type: String,
       required: true,
@@ -31,6 +26,9 @@ const Schema = new mongoose.Schema(
         },
         message: () => "The specified email address is already in use.",
       },
+    },
+    uid: {
+      type: String,
     },
     company: {
       type: String,

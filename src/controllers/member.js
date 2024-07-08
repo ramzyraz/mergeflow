@@ -167,7 +167,7 @@ export const updateByEmail = async (req, res) => {
       (req.body.photoURL && req.body.photoURL?.preview) || "";
 
     if (!email) {
-      return res
+      res
         .status(400)
         .json({
           message: "Missing email in the request",
@@ -176,7 +176,7 @@ export const updateByEmail = async (req, res) => {
     }
 
     if (!teamId) {
-      return res
+      res
         .status(400)
         .json({
           message: "Missing teamId in the request",
@@ -187,7 +187,7 @@ export const updateByEmail = async (req, res) => {
     const team = await Team.findById(teamId);
 
     if (!team) {
-      return res.status(404).json({ message: "Team not found." });
+      res.status(404).json({ message: "Team not found." });
     }
 
     const updatedMember = await Member.findOneAndUpdate(
@@ -197,7 +197,7 @@ export const updateByEmail = async (req, res) => {
     );
 
     if (!updatedMember) {
-      return res
+      res
         .status(200)
         .json({
           message: "Member not found or does not belong to the specified team.",

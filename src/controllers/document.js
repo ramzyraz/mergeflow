@@ -3,6 +3,7 @@ import Member from "../models/member.js";
 import Team from "../models/team.js";
 import Group from "../models/group.js";
 import { sendInviteEmail } from "./invite.js";
+import { ObjectId } from "../utils/db.js";
 
 export const uploadFiles = async (req, res) => {
   try {
@@ -132,7 +133,7 @@ export const updateDocument = async (req, res) => {
       return res.status(404).json({ error: "Folder not found." });
     }
 
-    if (!folder.teamId.equals(teamId)) {
+    if (!folder.teamId.equals(new Object(teamId))) {
       return res
         .status(400)
         .json({ error: "Folder does not belong to the current team." });
@@ -260,6 +261,21 @@ export const shareDocumentWithUserOrGroup = async (req, res) => {
       // Share the document with the group
       document.groups.push(groupId);
       await document.save();
+
+      // Update the group's sharedDocuments array
+      group.sharedDocuments.push(document._id);
+      await group.save();
+
+      // Update each member's sharedDocuments array
+      const memberUpdatePromises = group.members.map(async (memberId) => {
+        const member = await Member.findById(memberId);
+        if (member) {
+          member.sharedDocuments.push(document._id);
+          return member.save();
+        }
+      });
+
+      await Promise.all(memberUpdatePromises);
     }
 
     // If userEmail is provided, share the document with the specified user
@@ -280,6 +296,10 @@ export const shareDocumentWithUserOrGroup = async (req, res) => {
       // Share the document with the user
       document.sharedWith.push({ member: member._id, permission: "view" });
       await document.save();
+
+      // Update the member's sharedDocuments array
+      member.sharedDocuments.push(document._id);
+      await member.save();
       return res.status(200).json(document);
     }
 
@@ -308,16 +328,29 @@ export const revokeDocumentAccess = async (req, res) => {
     // If groupId is provided, revoke the access of the document from the group
     if (groupId) {
       // Check if the group exists
-      const groupExists = await Group.findOne({ _id: groupId, teamId });
-      if (!groupExists) {
+      const group = await Group.findOne({ _id: groupId, teamId });
+      if (!group) {
         return res.status(404).json({ error: "Group not found." });
       }
 
       // Revoke the access of the document from the group
       document.groups = document.groups.filter(
-        (deptId) => !deptId.equals(groupId),
+        (deptId) => !deptId.equals(new ObjectId(groupId)),
       );
       await document.save();
+
+      group.sharedDocuments = group.sharedDocuments.filter(docId => !docId.equals(new ObjectId(document._id)));
+      await group.save();
+
+      const memberUpdatePromises = group.members.map(async (memberId) => {
+        const member = await Member.findById(memberId);
+        if (member) {
+          member.sharedDocuments = member.sharedDocuments.filter(docId => !docId.equals(document._id));
+          return member.save();
+        }
+      });
+
+      await Promise.all(memberUpdatePromises);
     }
 
     // If userEmail is provided, revoke the access of the document with the specified user
@@ -330,9 +363,12 @@ export const revokeDocumentAccess = async (req, res) => {
 
       // Revoke the access of the document from the user
       document.sharedWith = document.sharedWith.filter(
-        (entry) => !entry.member.equals(memberId),
+        (entry) => !entry.member.equals(new ObjectId(memberId)),
       );
       await document.save();
+
+      member.sharedDocuments = member.sharedDocuments.filter(docId => !docId.equals(new ObjectId(document._id)));
+      await member.save();
       return res
         .status(200)
         .json({
@@ -368,7 +404,7 @@ export const updatePermissions = async (req, res) => {
 
     // Find the shared member with the provided email
     const sharedMember = document.sharedWith.find(
-      (entry) => entry && entry?.member.equals(memberId),
+      (entry) => entry && entry?.member.equals(new ObjectId(memberId)),
     );
     if (!sharedMember) {
       return res
@@ -497,7 +533,7 @@ export const deleteDocument = async (req, res) => {
     if (folderId) {
       const folder = await Document.findById(folderId);
       if (folder) {
-        folder.files = folder.files.filter((file) => !file.equals(documentId));
+        folder.files = folder.files.filter((file) => !file.equals(new ObjectId(documentId)));
         folder.size -= document.size;
         folder.totalFiles--;
         await folder.save();

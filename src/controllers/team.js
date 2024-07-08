@@ -221,6 +221,7 @@ export const loadOneByEmail = async (req, res) => {
     const teamWithMatchingOwner = await Team.findOne({
       ownerEmail: { $regex: `@${email.split("@")[1]}`, $options: "i" },
     });
+
     if (!teamWithMatchingOwner) {
       // If no team matches the criteria, return not found
       return res
@@ -236,6 +237,7 @@ export const loadOneByEmail = async (req, res) => {
     const isEmailInDocShared = teamWithMatchingOwner.docShared.find(
       (teamItem) => teamItem.email === email,
     );
+
     if (!isEmailInShared && !isEmailInDocShared) {
       return res
         .status(403)

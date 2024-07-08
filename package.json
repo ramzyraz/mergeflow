@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon --trace-warnings src/index.js"
+    "dev": "nodemon --trace-warnings src/index.js",
+    "prettier": "prettier --write ."
   },
   "keywords": [],
   "author": "Ramez Salman",
@@ -16,9 +17,9 @@
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "firebase-admin": "^12.2.0",
     "mongoose": "^8.4.5",
     "postmark": "^4.0.4",
+    "prettier": "^3.3.2",
     "uuid": "^10.0.0"
   },
   "devDependencies": {

@@ -1,27 +1,34 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const Schema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  teamId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Team',
-    required: true,
-  },
-  members: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Member',
-  }],
-  sharedDocuments: {
-    type: [{
+const Schema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    teamId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Document',
-    }],
-    default: []
+      ref: "Team",
+      required: true,
+    },
+    members: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Member",
+      },
+    ],
+    sharedDocuments: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Document",
+        },
+      ],
+      default: [],
+    },
   },
-}, { timestamps: true });
+  { timestamps: true },
+);
 
-export default mongoose.model('Group', Schema);
+export default mongoose.model("Group", Schema);

@@ -1,4 +1,4 @@
-import express from 'express';
+import express from "express";
 import {
   createTeam,
   deleteTeam,
@@ -6,8 +6,8 @@ import {
   loadOne,
   loadOneByEmail,
   loadOneByName,
-  sendInvite
-} from '../controllers/team.js';
+  sendInvite,
+} from "../controllers/team.js";
 
 const router = express.Router();
 

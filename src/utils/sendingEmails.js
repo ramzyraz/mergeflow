@@ -1,7 +1,7 @@
-import postmark from 'postmark';
-import { v4 as uuidv4 } from 'uuid';
-import logger from './logger.js';
-import { POSTMARK_API_KEY, SENDER_EMAIL } from '../config/index.js';
+import postmark from "postmark";
+import { v4 as uuidv4 } from "uuid";
+import logger from "./logger.js";
+import { POSTMARK_API_KEY, SENDER_EMAIL } from "../config/index.js";
 
 const client = new postmark.ServerClient(POSTMARK_API_KEY);
 
@@ -10,7 +10,7 @@ export const sendEmail = async (to, subject, htmlContent) => {
     From: SENDER_EMAIL,
     To: to,
     Subject: subject,
-    HtmlBody: htmlContent
+    HtmlBody: htmlContent,
   };
 
   try {
@@ -25,7 +25,7 @@ export const sendEmail = async (to, subject, htmlContent) => {
 
 export const generateEmailContent = (invitationLink) => {
   const inviteToken = uuidv4();
-  const subject = 'Invitation to join our app';
+  const subject = "Invitation to join our app";
   const html = `
     <p>Hello,</p>
     <p>You have been invited to join our app! Click the link below to sign up:</p>

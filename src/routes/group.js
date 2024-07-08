@@ -1,4 +1,4 @@
-import express from 'express';
+import express from "express";
 import {
   createGroup,
   deleteGroup,
@@ -6,8 +6,8 @@ import {
   loadMany,
   loadOne,
   removeFromGroup,
-  updateGroup
-} from '../controllers/group.js';
+  updateGroup,
+} from "../controllers/group.js";
 
 const router = express.Router();
 router.get("/", loadMany);

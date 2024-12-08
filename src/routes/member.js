@@ -1,4 +1,4 @@
-import express from 'express';
+import express from "express";
 import {
   loadOne,
   loadMany,
@@ -8,7 +8,7 @@ import {
   deleteOne,
   deleteMany,
   createMember,
-} from '../controllers/member.js';
+} from "../controllers/member.js";
 
 const router = express.Router();
 

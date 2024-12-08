@@ -1,4 +1,4 @@
-import express from 'express';
+import express from "express";
 import {
   createDocument,
   deleteDocument,
@@ -11,8 +11,8 @@ import {
   updateFavorite,
   updatePermissions,
   updateTags,
-  uploadFiles
-} from '../controllers/document.js';
+  uploadFiles,
+} from "../controllers/document.js";
 
 const router = express.Router();
 router.get("/", loadMany);
@@ -20,7 +20,7 @@ router.post("/upload", uploadFiles);
 router.post("/create", createDocument);
 router.get("/:documentId", loadOne);
 router.put("/:documentId/edit", updateDocument);
-router.put('/:documentId/share', shareDocumentWithUserOrGroup);
+router.put("/:documentId/share", shareDocumentWithUserOrGroup);
 router.put("/:documentId/permission", updatePermissions);
 router.put("/:documentId/favorite", updateFavorite);
 router.put("/:documentId/tags", updateTags);
